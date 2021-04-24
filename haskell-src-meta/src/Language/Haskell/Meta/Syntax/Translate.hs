@@ -272,6 +272,7 @@ instance ToExp (Exts.Exp l) where
   toExp e@Exts.IPVar{}                 = noTH "toExp" e
   toExp (Exts.Con _ n)                 = TH.ConE (toName n)
   toExp (Exts.Lit _ l)                 = TH.LitE (toLit l)
+  toExp (Exts.OverloadedLabel _ s)     = TH.LabelE s
   toExp (Exts.InfixApp _ e o f)        = TH.UInfixE (toExp e) (toExp o) (toExp f)
 #if MIN_VERSION_template_haskell(2,12,0)
   toExp (Exts.App _ e (Exts.TypeApp _ t)) = TH.AppTypeE (toExp e) (toType t)
