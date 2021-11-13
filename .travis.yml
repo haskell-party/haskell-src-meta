@@ -29,6 +29,15 @@ before_cache:
 
 matrix:
   include:
+    - compiler: "ghc-9.2.1"
+    # env: HADDOCK=--disable-haddocks TEST=--disable-tests BENCH=--disable-benchmarks
+      addons: {apt: {packages: [ghc-ppa-tools,cabal-install-3.0,ghc-9.2.1], sources: [hvr-ghc]}}
+    - compiler: "ghc-9.0.1"
+    # env: HADDOCK=--disable-haddocks TEST=--disable-tests BENCH=--disable-benchmarks
+      addons: {apt: {packages: [ghc-ppa-tools,cabal-install-3.0,ghc-9.0.1], sources: [hvr-ghc]}}
+    - compiler: "ghc-8.10.7"
+    # env: HADDOCK=--disable-haddocks TEST=--disable-tests BENCH=--disable-benchmarks
+      addons: {apt: {packages: [ghc-ppa-tools,cabal-install-3.0,ghc-8.10.7], sources: [hvr-ghc]}}
     - compiler: "ghc-8.8.1"
     # env: HADDOCK=--disable-haddocks TEST=--disable-tests BENCH=--disable-benchmarks
       addons: {apt: {packages: [ghc-ppa-tools,cabal-install-3.0,ghc-8.8.1], sources: [hvr-ghc]}}
