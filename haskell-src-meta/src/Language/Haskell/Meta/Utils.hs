@@ -3,6 +3,7 @@
 {-# LANGUAGE DeriveDataTypeable   #-}
 {-# LANGUAGE FlexibleContexts     #-}
 {-# LANGUAGE FlexibleInstances    #-}
+{-# LANGUAGE LambdaCase           #-}
 {-# LANGUAGE PatternGuards        #-}
 {-# LANGUAGE RankNTypes           #-}
 {-# LANGUAGE StandaloneDeriving   #-}
@@ -328,32 +329,27 @@ dataDCons (DataD _ _ _ cons _)   = cons
 dataDCons _                      = []
 
 fromDataConI :: Info -> Q (Maybe Exp)
+fromDataConI = \case
 #if MIN_VERSION_template_haskell(2,11,0)
-fromDataConI (DataConI dConN ty _tyConN) =
-  let n = arityT ty
-  in replicateM n (newName "a")
-      >>= \ns -> return (Just (LamE
-#if MIN_VERSION_template_haskell(2,18,0)
-                    [ConP dConN [] (fmap VarP ns)]
+  DataConI dConN ty _tyConN ->
 #else
-                    [ConP dConN (fmap VarP ns)]
+  DataConI dConN ty _tyConN _fxty ->
 #endif
+    do
+      ns <- replicateM (arityT ty) (newName "a")
+      return $ Just $ LamE [mkConP dConN (map VarP ns)] (mkTuple ns)
+  _ -> return Nothing
+  where
 #if MIN_VERSION_template_haskell(2,16,0)
-                    (TupE $ fmap (Just . VarE) ns)
+    mkTuple = TupE . map (Just . VarE)
 #else
-                    (TupE $ fmap VarE ns)
+    mkTuple = TupE . map VarE
 #endif
-                    ))
+#if MIN_VERSION_template_haskell(2,18,0)
+    mkConP dConN = ConP dConN []
 #else
-fromDataConI (DataConI dConN ty _tyConN _fxty) =
-  let n = arityT ty
-  in replicateM n (newName "a")
-      >>= \ns -> return (Just (LamE
-                    [ConP dConN (fmap VarP ns)]
-                    (TupE $ fmap VarE ns)))
-
+    mkConP = ConP
 #endif
-fromDataConI _ = return Nothing
 
 fromTyConI :: Info -> Maybe Dec
 fromTyConI (TyConI dec) = Just dec
