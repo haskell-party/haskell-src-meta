@@ -333,7 +333,11 @@ fromDataConI (DataConI dConN ty _tyConN) =
   let n = arityT ty
   in replicateM n (newName "a")
       >>= \ns -> return (Just (LamE
+#if MIN_VERSION_template_haskell(2,18,0)
+                    [ConP dConN [] (fmap VarP ns)]
+#else
                     [ConP dConN (fmap VarP ns)]
+#endif
 #if MIN_VERSION_template_haskell(2,16,0)
                     (TupE $ fmap (Just . VarE) ns)
 #else

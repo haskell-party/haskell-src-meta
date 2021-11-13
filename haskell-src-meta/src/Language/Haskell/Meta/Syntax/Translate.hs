@@ -222,7 +222,7 @@ instance ToPat (Exts.Pat l) where
     TH.DoublePrimL r'' -> TH.DoublePrimL (negate r'')
     _                  -> nonsense "toPat" "negating wrong kind of literal" l
   toPat (Exts.PInfixApp _ p n q) = TH.UInfixP (toPat p) (toName n) (toPat q)
-  toPat (Exts.PApp _ n ps) = TH.ConP (toName n) (fmap toPat ps)
+  toPat (Exts.PApp _ n ps) = TH.ConP (toName n) [] (fmap toPat ps)
   toPat (Exts.PTuple _ Exts.Boxed ps) = TH.TupP (fmap toPat ps)
   toPat (Exts.PTuple _ Exts.Unboxed ps) = TH.UnboxedTupP (fmap toPat ps)
   toPat (Exts.PList _ ps) = TH.ListP (fmap toPat ps)
