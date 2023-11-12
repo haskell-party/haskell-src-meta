@@ -40,7 +40,7 @@ decCons (DataD _ _ _ _ cons _)   = cons
 decCons (NewtypeD _ _ _ _ con _) = [con]
 decCons _                        = []
 
-#if MIN_VERSION_template_haskell(2,21,0)
+#if !MIN_VERSION_template_haskell(2,21,0)
 type TyVarBndrVis = TyVarBndrUnit
 #endif
 
