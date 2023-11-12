@@ -40,8 +40,15 @@ decCons (DataD _ _ _ _ cons _)   = cons
 decCons (NewtypeD _ _ _ _ con _) = [con]
 decCons _                        = []
 
+#if !MIN_VERSION_template_haskell(2,21,0)
+#if __GLASGOW_HASKELL__ < 900
+type TyVarBndrVis = TyVarBndr_ ()
+#else
+type TyVarBndrVis = TyVarBndrUnit
+#endif
+#endif
 
-decTyVars :: Dec -> [TyVarBndr_ ()]
+decTyVars :: Dec -> [TyVarBndrVis]
 decTyVars (DataD _ _ ns _ _ _)    = ns
 decTyVars (NewtypeD _ _ ns _ _ _) = ns
 decTyVars (TySynD _ ns _)         = ns
