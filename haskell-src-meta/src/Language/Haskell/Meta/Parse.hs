@@ -43,20 +43,20 @@ import           Language.Haskell.TH.Syntax             hiding (Extension (..))
 -- * template-haskell
 
 parsePat :: String -> Either String Pat
-parsePat = either Left (Right . toPat) . parseHsPat
+parsePat = fmap toPat . parseHsPat
 
 parseExp :: String -> Either String Exp
-parseExp = either Left (Right . toExp) . parseHsExp
+parseExp = fmap toExp . parseHsExp
 
 parseType :: String -> Either String Type
-parseType = either Left (Right . toType) . parseHsType
+parseType = fmap toType . parseHsType
 
 parseDecs :: String -> Either String [Dec]
-parseDecs  = either Left (Right . toDecs) . parseHsDecls
+parseDecs  = fmap toDecs . parseHsDecls
 
 -- | @since 0.8.2
 parseDecsWithMode :: ParseMode -> String -> Either String [Dec]
-parseDecsWithMode parseMode = either Left (Right . toDecs)
+parseDecsWithMode parseMode = fmap toDecs
   . parseHsDeclsWithMode parseMode
 
 -----------------------------------------------------------------------------
@@ -93,12 +93,12 @@ parseHsModule :: String -> Either String (Hs.Module Hs.SrcSpanInfo)
 parseHsModule = parseResultToEither . parseModuleWithMode myDefaultParseMode
 
 parseHsDecls :: String -> Either String [Hs.Decl Hs.SrcSpanInfo]
-parseHsDecls = either Left (Right . moduleDecls)
+parseHsDecls = fmap moduleDecls
   . parseResultToEither . parseModuleWithMode myDefaultParseMode
 
 -- | @since 0.8.2
 parseHsDeclsWithMode :: ParseMode -> String -> Either String [Hs.Decl Hs.SrcSpanInfo]
-parseHsDeclsWithMode parseMode = either Left (Right . moduleDecls)
+parseHsDeclsWithMode parseMode = fmap moduleDecls
   . parseResultToEither . parseModuleWithMode parseMode
 
 
