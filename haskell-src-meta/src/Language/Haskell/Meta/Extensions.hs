@@ -367,6 +367,13 @@ fromExtension e = case e of
   TH.ExtendedLiterals                  -> Nothing
 #endif
 
+-- 2.22.0 ---------------------------------------
+
+#if MIN_VERSION_template_haskell(2,22,0)
+  TH.RequiredTypeArguments             -> Nothing
+  TH.ListTuplePuns                     -> Nothing
+#endif
+
   -- NB: when adding a case here, you may also need to update `toExtension`
 
 
