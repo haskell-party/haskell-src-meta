@@ -798,7 +798,11 @@ instance ToDecs (Exts.Decl l) where
   toDecs (Exts.InfixDecl l assoc Nothing ops) =
       toDecs (Exts.InfixDecl l assoc (Just 9) ops)
   toDecs (Exts.InfixDecl _ assoc (Just fixity) ops) =
+#if MIN_VERSION_template_haskell(2,22,0)
+    map (\op -> TH.InfixD (TH.Fixity fixity dir) TH.NoNamespaceSpecifier (toName op)) ops
+#else
     map (\op -> TH.InfixD (TH.Fixity fixity dir) (toName op)) ops
+#endif
    where
     dir = case assoc of
       Exts.AssocNone _  -> TH.InfixN
