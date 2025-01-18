@@ -20,7 +20,6 @@ module HsHere
 
 import qualified Control.Monad.Fail           as Fail
 import           Data.Generics                (Data)
-import           Data.Typeable                (Typeable)
 import           Language.Haskell.Meta        (parseExp, parsePat)
 import           Language.Haskell.Meta.Utils  (cleanNames)
 import           Language.Haskell.TH.Lib      hiding (parensP)
@@ -42,7 +41,7 @@ data Here
   = CodeH Exp
   | TextH String
   | ManyH [Here]
-  deriving (Eq,Show,Data,Typeable)
+  deriving (Eq,Show,Data)
 
 -- | Example:
 --
