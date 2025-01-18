@@ -374,6 +374,14 @@ fromExtension e = case e of
   TH.ListTuplePuns                     -> Nothing
 #endif
 
+-- 2.23.0 ---------------------------------------
+
+#if MIN_VERSION_template_haskell(2,23,0)
+  TH.MultilineStrings                  -> Nothing
+  TH.NamedDefaults                     -> Nothing
+  TH.OrPatterns                        -> Nothing
+#endif
+
   -- NB: when adding a case here, you may also need to update `toExtension`
 
 

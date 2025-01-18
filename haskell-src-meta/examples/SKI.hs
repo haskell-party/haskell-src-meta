@@ -20,7 +20,6 @@ module SKI
 
 import qualified Control.Monad.Fail           as Fail
 import           Data.Generics                (Data)
-import           Data.Typeable                (Typeable)
 import           Language.Haskell.Meta        (parseExp, parsePat)
 import           Language.Haskell.Meta.Utils  (cleanNames, ppDoc, unsafeRunQ)
 import           Language.Haskell.TH.Lib      hiding (parensP)
@@ -40,7 +39,7 @@ quoteDecNotImplemented = fail . ("dec quoter not implemented: " ++ )
 
 
 data SKI = S | K | I | E Exp | SKI :$ SKI
-  deriving (Eq,Data,Typeable)
+  deriving (Eq,Data)
 
 run :: String -> [SKI]
 run = fmap eval . fst . parse
