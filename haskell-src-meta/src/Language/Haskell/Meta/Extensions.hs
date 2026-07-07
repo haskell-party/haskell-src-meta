@@ -167,6 +167,15 @@ toExtension e = case e of
 #endif
 #endif
 
+#if MIN_VERSION_haskell_src_exts(1,24,0)
+  Exts.ImportQualifiedPost        ->
+#if MIN_VERSION_template_haskell(2,16,0)
+      Just TH.ImportQualifiedPost
+#else
+      Nothing
+#endif
+#endif
+
   -- NB: when adding a case here, you may also need to update `fromExtension`
 
 
@@ -343,9 +352,14 @@ fromExtension e = case e of
 -- 2.16.0 ----------------------------------------
 #if MIN_VERSION_template_haskell(2,16,0)
   TH.UnliftedNewtypes                  -> Nothing
-  TH.ImportQualifiedPost               -> Nothing
   TH.CUSKs                             -> Nothing
   TH.StandaloneKindSignatures          -> Nothing
+  TH.ImportQualifiedPost               ->
+#if MIN_VERSION_haskell_src_exts(1,24,0)
+    Just Exts.ImportQualifiedPost
+#else
+    Nothing
+#endif
 #endif
 
 -- 2.19.0 ---------------------------------------
