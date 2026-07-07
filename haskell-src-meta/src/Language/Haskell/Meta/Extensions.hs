@@ -382,6 +382,11 @@ fromExtension e = case e of
   TH.OrPatterns                        -> Nothing
 #endif
 
+#if MIN_VERSION_template_haskell(2,24,0)
+  TH.ExplicitLevelImports              -> Nothing
+  TH.ImplicitStagePersistence          -> Nothing
+#endif
+
   -- NB: when adding a case here, you may also need to update `toExtension`
 
 
